@@ -6,6 +6,7 @@
 
         <script src="./isometrics/utils/simpleFunction.js"></script>
         <script src="./constant.js"></script>
+        <script src="./isometrics/materials/Materials.js"></script>
     </head>
     <body onscroll="myFunction()">
         <div class="form-group">
@@ -13,15 +14,33 @@
                 <span>
                     Number of Columns:
                 </span>
-                <input id="num-cols" type="number" style="width: 100px; margin-left: 10px;">
+                <input id="num-cols" type="number" value="10">
             </div>
             <div>
                 <span>
                     Number of Rows:
                 </span>
-                <input id="num-rows" type="number" style="width: 100px; margin-left: 10px;">
+                <input id="num-rows" type="number" value="15">
             </div>
-            <button id="create-btn">Create</button>
+            <div>
+                <span>
+                    Number of Rock1:
+                </span>
+                <input id="num-rock1" type="number" value="10">
+            </div>
+            <div>
+                <span>
+                    Number of Rock2:
+                </span>
+                <input id="num-rock2" type="number" value="15">
+            </div>
+            <div>
+                <span>
+                    Number of Rock3:
+                </span>
+                <input id="num-rock3" type="number" value="10">
+            </div>
+            <button id="create-btn">Recreate</button>
         </div>
         <div class="canvas-div">
             <canvas id="canvas"></canvas>
@@ -30,7 +49,6 @@
         <script src="./isometrics/maps/map01.js"></script>
         <script src="./isometrics/Point.js"></script>
         <script src="./isometrics/Size.js"></script>
-        <script src="./isometrics/materials/Materials.js"></script>
         <script src="./isometrics/IsometricPoint.js"></script>
         <script src="./isometrics/IsometricTexturize.js"></script>
         <script src="./isometrics/Isometric.js"></script>
@@ -52,6 +70,7 @@
             flex-direction: column;
             padding: 20px;
             background-color: rgba(255, 255, 255, 0.6);
+            border: 2px solid #1E88E5;
         }
         div.form-group div {
             display: flex; 
@@ -61,6 +80,11 @@
         div.form-group div span {
             width: 140px; 
             text-align: left;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        div.form-group input {
+            width: 100px; margin-left: 10px;
         }
         div.form-group button#create-btn {
             padding: 7px 0px;

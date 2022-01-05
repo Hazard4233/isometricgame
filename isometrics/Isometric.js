@@ -12,9 +12,6 @@ class Isometric{
         this.baseX = baseX;
         this.baseY = baseY;
 
-        
-        this.hoverTileColor = '#FFEE58';
-        this.activeTileColor = '#F44336';
         this.tilePos1 = [0, 0];
         this.tilePos2 = [0, 0];
         this.tilePos3 = [0, 0];
@@ -44,13 +41,13 @@ class Isometric{
         this.tilePos4 = [x, y + TILE_DIAGONAL_Y / 2];
     }
 
-    tileBorder = (initX, initY, height, color, tileOnRight = false, tileOnLeft = false) => {
+    tileBorder = (initX, initY, height, color, tileOnRight, tileOnLeft) => {
         let y = this.baseY + ((initY + initX - height) * TILE_DIAGONAL_Y / 2);
         let x = this.baseX + (initX * TILE_DIAGONAL_X / 2) - (initY * TILE_DIAGONAL_X / 2);
         this.graphics.fillStyle = color;
         this.graphics.setLineDash([2]);
 
-        if (!tileOnLeft) {
+        if (tileOnLeft) {
             this.graphics.beginPath();
             this.graphics.moveTo(x, y + TILE_DIAGONAL_Y / 2);
             this.graphics.lineTo(x, y + TILE_DIAGONAL_Y);
@@ -62,7 +59,7 @@ class Isometric{
             this.graphics.stroke();
         }
 
-        if (!tileOnRight) {
+        if (tileOnRight) {
             this.graphics.beginPath();
             this.graphics.moveTo(x + TILE_DIAGONAL_X / 2 ,y + TILE_DIAGONAL_Y);
             this.graphics.lineTo(x + TILE_DIAGONAL_X, y + TILE_DIAGONAL_Y / 2);
@@ -95,15 +92,17 @@ class Isometric{
 
     
 
-    drawTile(isoPoint, texture, float, tileOnRight, tileOnLeft, selected, hovered, enableBorder){
+    drawTile(isoPoint, texture, float, tileOnRight, tileOnLeft, tileColor, tileBorderColor){
 
         if (float || isoPoint.height == 0) {
-            this.tileSkull(isoPoint.x, isoPoint.y, isoPoint.height, selected ? this.activeTileColor : hovered ? this.hoverTileColor : materials[texture][0]);
-            if(enableBorder) this.tileBorder(
+            this.tileSkull(isoPoint.x, isoPoint.y, isoPoint.height, tileColor);
+            this.tileBorder(
                 isoPoint.x, 
                 isoPoint.y, 
                 isoPoint.height, 
-                selected ? this.activeTileColor : hovered ? this.hoverTileColor : materials[texture][1],
+                tileBorderColor,
+                tileOnRight,
+                tileOnLeft,
             );
         } 
         // else {

@@ -6,15 +6,17 @@ var isometric
 var isometricList = [];
 var selectedTile = {
     id: "",
-    idx_x: -1,
-    idx_y: -1
+    idxRow: -1,
+    idxCol: -1
 };
 var hoveredTile = {
     id: "",
-    idx_x: -2,
-    idx_y: -2
+    idxRow: -2,
+    idxCol: -2
 }    
 
+
+initCanvas()
 
 function clickTile(evt) {
     var x = evt.x + document.querySelector(".canvas-div").scrollLeft;
@@ -28,41 +30,38 @@ function clickTile(evt) {
     })
 
     if (selectedTile.id !== "") {
-        var texture = new IsometricTexturize(map[selectedTile.idx_y][selectedTile.idx_x]);
+        var texture = new IsometricTexturize(map[selectedTile.idxCol][selectedTile.idxRow]);
         isometric.drawTile(
-            new IsomtericPoint(selectedTile.idx_x, selectedTile.idx_y, texture.getHeight()),
+            new IsomtericPoint(selectedTile.idxRow, selectedTile.idxCol, texture.getHeight()),
             texture.getTexture(),
             false,
-            selectedTile.idx_x != map[selectedTile.idx_y].length && map[selectedTile.idx_y][selectedTile.idx_x+1] ==  map[selectedTile.idx_y][selectedTile.idx_x] ? false  : true,
-            selectedTile.idx_y + 1 >= map.length  ? false : true,
-            false,
-            false,
-            false
+            selectedTile.idxRow === map[selectedTile.idxCol].length - 1 ? true : false, // tileOnRight
+            selectedTile.idxCol + 1 >= map.length ? true : false, // tileOnLeft
+            materials[texture.getTexture()][0], // tileColor
+            materials[texture.getTexture()][1], // tileBorderColor
         );
     }
     
     if (result.length !== 0) {
-        var texture = new IsometricTexturize(map[result[0].idx_y][result[0].idx_x]);
+        var texture = new IsometricTexturize(map[result[0].idxCol][result[0].idxRow]);
         isometric.drawTile(
-            new IsomtericPoint(result[0].idx_x, result[0].idx_y, texture.getHeight()),
+            new IsomtericPoint(result[0].idxRow, result[0].idxCol, texture.getHeight()),
             texture.getTexture(),
             false,
-            result[0].idx_x != map[result[0].idx_y].length && map[result[0].idx_y][result[0].idx_x+1] ==  map[result[0].idx_y][result[0].idx_x] ? false  : true,
-            result[0].idx_y + 1 >= map.length  ? false : true,
-            true,
-            false,
+            result[0].idxRow === map[result[0].idxCol].length - 1 ? true : false, // tileOnRight
+            result[0].idxCol + 1 >= map.length ? true : false, // tileOnLeft
+            CLICK_TILE_COLOR, // tileColor
+            CLICK_TILE_COLOR, // tile
             
         );
         selectedTile.id = result[0].id
-        selectedTile.idx_x = result[0].idx_x;
-        selectedTile.idx_y = result[0].idx_y;
+        selectedTile.idxRow = result[0].idxRow;
+        selectedTile.idxCol = result[0].idxCol;
     }
 }
 
 
 function hoverTile(evt) {
-    // console.log(document.getElementsByTagName('canvas')[0].scrollTop)
-    // console.log(document.body.scrollTop)
     var x = evt.x + document.querySelector(".canvas-div").scrollLeft;
     var y = evt.y + document.querySelector(".canvas-div").scrollTop;
     
@@ -75,37 +74,35 @@ function hoverTile(evt) {
     if (result.length !== 0) {
         if (hoveredTile.id !== "" && hoveredTile.id !== selectedTile.id) {
             // change highlight tile into origin color
-            var texture = new IsometricTexturize(map[hoveredTile.idx_y][hoveredTile.idx_x]);
+            var texture = new IsometricTexturize(map[hoveredTile.idxCol][hoveredTile.idxRow]);
             isometric.drawTile(
-                new IsomtericPoint(hoveredTile.idx_x, hoveredTile.idx_y, texture.getHeight()),
-                texture.getTexture(),
-                false,
-                hoveredTile.idx_x != map[hoveredTile.idx_y].length && map[hoveredTile.idx_y][hoveredTile.idx_x+1] ==  map[hoveredTile.idx_y][hoveredTile.idx_x] ? false  : true,
-                hoveredTile.idx_y + 1 >= map.length  ? false : true,
-                false,
-                false,
-                false
+                new IsomtericPoint(hoveredTile.idxRow, hoveredTile.idxCol, texture.getHeight()), // isoPoint
+                texture.getTexture(), // texture
+                false, // float
+                hoveredTile.idxRow === map[result[0].idxCol].length - 1 ? true : false, // tileOnRight
+                hoveredTile.idxCol + 1 == map.length ? true : false, // tileOnLeft
+                materials[texture.getTexture()][0], // tileColor
+                materials[texture.getTexture()][1], // tileBorderColor
             );
         }
         
         if (selectedTile.id !== result[0].id) {
             // tile highlight
-            var texture = new IsometricTexturize(map[result[0].idx_y][result[0].idx_x]);
+            var texture = new IsometricTexturize(map[result[0].idxCol][result[0].idxRow]);
             isometric.drawTile(
-                new IsomtericPoint(result[0].idx_x, result[0].idx_y, texture.getHeight()),
-                texture.getTexture(),
-                false,
-                result[0].idx_x != map[result[0].idx_y].length && map[result[0].idx_y][result[0].idx_x+1] ==  map[result[0].idx_y][result[0].idx_x] ? false  : true,
-                result[0].idx_y + 1 >= map.length  ? false : true,
-                false,
-                true,
-                false
+                new IsomtericPoint(result[0].idxRow, result[0].idxCol, texture.getHeight()), // isoPoint
+                texture.getTexture(), // texture
+                false, // float
+                result[0].idxRow === map[result[0].idxCol].length - 1 ? true : false, // tileOnRight
+                result[0].idxCol + 1 >= map.length ? true : false, // tileOnLeft
+                HOVER_TILE_COLOR, // tileColor
+                HOVER_TILE_COLOR, // tileBorderColor
             );
         }
         
         hoveredTile.id = result[0].id;
-        hoveredTile.idx_x = result[0].idx_x;
-        hoveredTile.idx_y = result[0].idx_y;
+        hoveredTile.idxRow = result[0].idxRow;
+        hoveredTile.idxCol = result[0].idxCol;
     }
 }
 
@@ -119,18 +116,21 @@ function initCanvas() {
     isometricList = [];
     selectedTile = {
         id: "",
-        idx_x: -1,
-        idx_y: -1
+        idxRow: -1,
+        idxCol: -1
     };
     hoveredTile = {
         id: "",
-        idx_x: -2,
-        idx_y: -2
+        idxRow: -2,
+        idxCol: -2
     }  
     
     // get column and row numbers
     var numCols = Number(document.getElementById('num-cols').value);
     var numRows = Number(document.getElementById('num-rows').value);
+    var numRock1 = Number(document.getElementById('num-rock1').value);
+    var numRock2 = Number(document.getElementById('num-rock2').value);
+    var numRock3 = Number(document.getElementById('num-rock3').value);
     if (numCols === 0 || numRows === 0) {
         window.alert("Please insert number of columns and rows.");
         return
@@ -146,28 +146,54 @@ function initCanvas() {
     
     isometric = new Isometric(canvas.graphics, baseX = canvasEle.clientWidth / 2, baseY = 150);
     
-    map = Array(numCols).fill(Array(numRows).fill("grass:0"))
+    // map = Array(numCols).fill(Array(numRows).fill("grass:0"))
+    for (let i = 0; i < numCols; i++) {
+        var arrayVar = [];
+        for (let j = 0; j < numRows; j++) {
+            arrayVar.push('grass:0');
+        }
+        map.push(arrayVar)
+    }
+
+    for (let i = 0; i < numRock1; i++) {
+        var randomNumCol = Math.floor(Math.random() * (numCols - 1));
+        var randomNumRow = Math.floor(Math.random() * (numRows - 1));
+        map[randomNumCol][randomNumRow] = `rock1:0`
+    }
+    for (let i = 0; i < numRock2; i++) {
+        var randomNumCol = Math.floor(Math.random() * (numCols - 1));
+        var randomNumRow = Math.floor(Math.random() * (numRows - 1));
+        map[randomNumCol][randomNumRow] = `rock2:0`
+    }
+    for (let i = 0; i < numRock3; i++) {
+        var randomNumCol = Math.floor(Math.random() * (numCols - 1));
+        var randomNumRow = Math.floor(Math.random() * (numRows - 1));
+        map[randomNumCol][randomNumRow] = `rock3:0`
+    }
+    console.log(map[0][0])
+    console.log(map)
+    
+    
     
 
 
-    for(let idx_y = 0; idx_y < map.length; idx_y++){
-        for(let idx_x = 0; idx_x < map[idx_y].length; idx_x++){
-            if (map[idx_y][idx_x] != null) {
-                var texture = new IsometricTexturize(map[idx_y][idx_x]);
+    for(let idxCol = 0; idxCol < map.length; idxCol++){
+        for(let idxRow = 0; idxRow < map[idxCol].length; idxRow++){
+            if (map[idxCol][idxRow] != null) {
+                var texture = new IsometricTexturize(map[idxCol][idxRow]);
                 isometric.drawTile(
-                    new IsomtericPoint(idx_x, idx_y, texture.getHeight()),
-                    texture.getTexture(),
-                    false,
-                    idx_x != map[idx_y].length && map[idx_y][idx_x+1] ==  map[idx_y][idx_x] ? true  : false,
-                    idx_y + 1 >= map.length  ? false : true,
-                    false,
-                    false,
-                    true
+                    new IsomtericPoint(idxRow, idxCol, texture.getHeight()), // isoPoint
+                    texture.getTexture(), // texture
+                    false, // float
+                    true, // tileOnRight
+                    true, // tileOnLeft
+                    materials[texture.getTexture()][0], // tileColor
+                    materials[texture.getTexture()][1], // tileBorderColor
                 );
                 isometricList.push({
                     id: generateUUID(),
-                    idx_x: idx_x,
-                    idx_y: idx_y,
+                    idxRow: idxRow,
+                    idxCol: idxCol,
                     pos1: isometric.tilePos1,
                     pos2: isometric.tilePos2,
                     pos3: isometric.tilePos3,
@@ -189,3 +215,4 @@ window.addEventListener('resize', resizeCanvas, false)
 document.getElementById("create-btn").addEventListener('click', () => {
     initCanvas()
 })
+
