@@ -1,12 +1,20 @@
-var baseX = window.innerWidth / 2;
-var baseY = window.innerHeight / 2;
+// var baseX = window.innerWidth / 2;
+// var baseY = window.innerHeight / 10;
+
+
+// var baseX = 1000;
+// var baseY = 0;
 
 class Isometric{
-    constructor(graphics){
+    constructor(graphics, baseX, baseY){
         this.graphics = graphics; //Load context
+
+        this.baseX = baseX;
+        this.baseY = baseY;
+
         
         this.hoverTileColor = '#FFEE58';
-        this.activeTileColor = '#FF9800';
+        this.activeTileColor = '#F44336';
         this.tilePos1 = [0, 0];
         this.tilePos2 = [0, 0];
         this.tilePos3 = [0, 0];
@@ -15,40 +23,40 @@ class Isometric{
         this.intialized = true;
     }
     tileSkull = (initX, initY, height, color) => {
-        let y = baseY + ((initY + initX - height) * 16);
-        let x = baseX + (initX * 32) - (initY * 32);
+        let y = this.baseY + ((initY + initX - height) * TILE_DIAGONAL_Y / 2);
+        let x = this.baseX + (initX * TILE_DIAGONAL_X / 2) - (initY * TILE_DIAGONAL_X / 2);
 
         this.graphics.fillStyle = color;
         this.graphics.setLineDash([2]);
         this.graphics.beginPath();
-        this.graphics.moveTo(x + 32, y);
-        this.graphics.lineTo(x + 64, y + 16);
-        this.graphics.lineTo(x + 32, y + 32);
-        this.graphics.lineTo(x , y + 16);
-        // this.graphics.lineTo(x + 32, y);
+        this.graphics.moveTo(x + TILE_DIAGONAL_X / 2, y);
+        this.graphics.lineTo(x + TILE_DIAGONAL_X, y + TILE_DIAGONAL_Y / 2);
+        this.graphics.lineTo(x + TILE_DIAGONAL_X / 2, y + TILE_DIAGONAL_Y);
+        this.graphics.lineTo(x , y + TILE_DIAGONAL_Y / 2);
+        this.graphics.lineTo(x + TILE_DIAGONAL_X / 2, y);
         this.graphics.closePath();
         this.graphics.fill();
         this.graphics.stroke();
 
-        this.tilePos1 = [x + 32, y];
-        this.tilePos2 = [x + 64, y + 16];
-        this.tilePos3 = [x + 32, y + 32];
-        this.tilePos4 = [x, y + 16];
+        this.tilePos1 = [x + TILE_DIAGONAL_X / 2, y];
+        this.tilePos2 = [x + TILE_DIAGONAL_X, y + TILE_DIAGONAL_Y / 2];
+        this.tilePos3 = [x + TILE_DIAGONAL_X / 2, y + TILE_DIAGONAL_Y];
+        this.tilePos4 = [x, y + TILE_DIAGONAL_Y / 2];
     }
 
     tileBorder = (initX, initY, height, color, tileOnRight = false, tileOnLeft = false) => {
-        let y = baseY + ((initY + initX - height) * 16);
-        let x = baseX + (initX * 32) - (initY * 32);
+        let y = this.baseY + ((initY + initX - height) * TILE_DIAGONAL_Y / 2);
+        let x = this.baseX + (initX * TILE_DIAGONAL_X / 2) - (initY * TILE_DIAGONAL_X / 2);
         this.graphics.fillStyle = color;
         this.graphics.setLineDash([2]);
 
         if (!tileOnLeft) {
             this.graphics.beginPath();
-            this.graphics.moveTo(x, y + 16);
-            this.graphics.lineTo(x, y + 32);
-            this.graphics.lineTo(x + 32, y + 48);
-            this.graphics.lineTo(x + 32, y + 32);
-            this.graphics.lineTo(x, y + 16);
+            this.graphics.moveTo(x, y + TILE_DIAGONAL_Y / 2);
+            this.graphics.lineTo(x, y + TILE_DIAGONAL_Y);
+            this.graphics.lineTo(x + TILE_DIAGONAL_X / 2, y + TILE_DIAGONAL_Y / 2 * 3);
+            this.graphics.lineTo(x + TILE_DIAGONAL_X / 2, y + TILE_DIAGONAL_Y);
+            this.graphics.lineTo(x, y + TILE_DIAGONAL_Y / 2);
             this.graphics.closePath();
             this.graphics.fill();
             this.graphics.stroke();
@@ -56,28 +64,30 @@ class Isometric{
 
         if (!tileOnRight) {
             this.graphics.beginPath();
-            this.graphics.moveTo(x + 32 ,y + 32);
-            this.graphics.lineTo(x +  64, y + 16);
-            this.graphics.lineTo(x +  64, y + 32);
-            this.graphics.lineTo(x + 32, y + 48);
+            this.graphics.moveTo(x + TILE_DIAGONAL_X / 2 ,y + TILE_DIAGONAL_Y);
+            this.graphics.lineTo(x + TILE_DIAGONAL_X, y + TILE_DIAGONAL_Y / 2);
+            this.graphics.lineTo(x + TILE_DIAGONAL_X, y + TILE_DIAGONAL_Y);
+            this.graphics.lineTo(x + TILE_DIAGONAL_X / 2, y + TILE_DIAGONAL_Y / 2 * 3);
             this.graphics.closePath();
             this.graphics.fill();
             this.graphics.stroke();
         }
+
+        
     }
 
     montainSkull = (x, y , color, height) => {
         this.graphics.fillStyle = color;
         this.graphics.beginPath();
-        this.graphics.moveTo(x + 32, y - 16);
-        this.graphics.lineTo(x + 64, y);
-        this.graphics.lineTo(x + 32, y + 16);
+        this.graphics.moveTo(x + TILE_DIAGONAL_X / 2, y - 16);
+        this.graphics.lineTo(x + TILE_DIAGONAL_X, y);
+        this.graphics.lineTo(x + TILE_DIAGONAL_X / 2, y + 16);
         this.graphics.lineTo(x , y);
-        this.graphics.lineTo(x + 32, y - 16);
+        this.graphics.lineTo(x + TILE_DIAGONAL_X / 2, y - 16);
         this.graphics.lineTo(x, y);
-        this.graphics.lineTo(x +32, y - 16 * height);
-        this.graphics.lineTo(x +32, y - 16);
-        this.graphics.lineTo(x + 32, y - 16 * height);
+        this.graphics.lineTo(x +TILE_DIAGONAL_X / 2, y - 16 * height);
+        this.graphics.lineTo(x + TILE_DIAGONAL_X / 2, y - 16);
+        this.graphics.lineTo(x + TILE_DIAGONAL_X / 2, y - 16 * height);
         this.graphics.closePath();
         this.graphics.fill();
         this.graphics.stroke();
@@ -85,11 +95,16 @@ class Isometric{
 
     
 
-    drawTile(isoPoint, texture, float, tileOnRight, tileOnLeft, selected, hovered){
+    drawTile(isoPoint, texture, float, tileOnRight, tileOnLeft, selected, hovered, enableBorder){
 
         if (float || isoPoint.height == 0) {
-            this.tileSkull(isoPoint.x, isoPoint.y, isoPoint.height, selected ? this.activeTileColor : materials[texture][0]);
-            this.tileBorder(isoPoint.x, isoPoint.y, isoPoint.height, selected ? this.activeTileColor : materials[texture][1]);
+            this.tileSkull(isoPoint.x, isoPoint.y, isoPoint.height, selected ? this.activeTileColor : hovered ? this.hoverTileColor : materials[texture][0]);
+            if(enableBorder) this.tileBorder(
+                isoPoint.x, 
+                isoPoint.y, 
+                isoPoint.height, 
+                selected ? this.activeTileColor : hovered ? this.hoverTileColor : materials[texture][1],
+            );
         } 
         // else {
         //     if (texture != "water")
@@ -114,8 +129,8 @@ class Isometric{
     }
 
     drawSprite(isoPoint,  sprite){
-        let y = baseY + ((isoPoint.y + isoPoint.x - isoPoint.height) * 16) - 32 + 8;
-        let x = (baseX + (isoPoint.x * 32) - (isoPoint.y * 32));
+        let y = this.baseY + ((isoPoint.y + isoPoint.x - isoPoint.height) * 16) - 32 + 8;
+        let x = (this.baseX + (isoPoint.x * 32) - (isoPoint.y * 32));
         var sprt = new Image();
         sprt.src = "isometrics/sprite/" + sprite + ".png";
         this.graphics.drawImage(sprt, x, y, 64,64);

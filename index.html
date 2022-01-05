@@ -5,9 +5,28 @@
         <meta charset="UTF-8" />
 
         <script src="./isometrics/utils/simpleFunction.js"></script>
+        <script src="./constant.js"></script>
     </head>
-    <body style="padding: 0; margin: 0;">
-        <canvas id="canvas"></canvas>
+    <body onscroll="myFunction()">
+        <div class="form-group">
+            <div>
+                <span>
+                    Number of Columns:
+                </span>
+                <input id="num-cols" type="number" style="width: 100px; margin-left: 10px;">
+            </div>
+            <div>
+                <span>
+                    Number of Rows:
+                </span>
+                <input id="num-rows" type="number" style="width: 100px; margin-left: 10px;">
+            </div>
+            <button id="create-btn">Create</button>
+        </div>
+        <div class="canvas-div">
+            <canvas id="canvas"></canvas>
+        </div>
+        
         <script src="./isometrics/maps/map01.js"></script>
         <script src="./isometrics/Point.js"></script>
         <script src="./isometrics/Size.js"></script>
@@ -18,4 +37,56 @@
         <script src="./isometrics/Canvas.js"></script>
         <script src="./isometrics/main.js"></script>
     </body>
+
+    <style>
+        
+        body {
+            padding: 0; margin: 0;
+            background-color: skyblue;
+        }
+        div.form-group {
+            position: fixed; 
+            top: 20px; 
+            left: 20px; 
+            display: flex; 
+            flex-direction: column;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.6);
+        }
+        div.form-group div {
+            display: flex; 
+            align-items: center; 
+            margin-bottom: 10px;
+        }
+        div.form-group div span {
+            width: 140px; 
+            text-align: left;
+        }
+        div.form-group button#create-btn {
+            padding: 7px 0px;
+            cursor: pointer;
+            border: none;
+            color: white;
+            font-weight: bold;
+            background-color: #1E88E5;
+        }
+        .canvas-div {
+            width: 100vw;
+            height: 100vh;
+            overflow: auto;
+        }
+        canvas {
+            /* overflow: auto; */
+        }
+    </style>
+
+    <script>
+        function myFunction() {
+            var elmnt = document.getElementsByTagName('canvas')[0];
+            var x = elmnt.scrollLeft;
+            var y = elmnt.scrollTop;
+            // document.getElementById ("demo").innerHTML = "Horizontally: " + x + "px<br>Vertically: " + y + "px";
+            console.log(y)
+        }
+    </script>
 </html>

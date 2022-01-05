@@ -1,0 +1,2 @@
+const TILE_DIAGONAL_X = 64;
+const TILE_DIAGONAL_Y = 32;
