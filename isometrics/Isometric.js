@@ -22,37 +22,28 @@ class Isometric{
     initPattern = (sprite, context) => {
         var img = new Image();
         img.src = `./isometrics/sprite/${sprite}.png`;
-        img.onload = function () {
-            var pattern = context.createPattern(img, 'repeat');
-            context.fillStyle = pattern;
-        }
-        
+        var pattern = context.createPattern(img, 'repeat');
+        context.fillStyle = pattern;
     }
-    tileSkull = (initX, initY, height, color, spritePattern) => {
+    tileSkull = (initX, initY, height, color, pattern) => {
         let y = this.baseY + ((initY + initX - height) * TILE_DIAGONAL_Y / 2);
         let x = this.baseX + (initX * TILE_DIAGONAL_X / 2) - (initY * TILE_DIAGONAL_X / 2);
 
         
-        if (spritePattern && !color) {
-            
-            // this.initPattern(sprite, this.graphics)
-            
+        if (pattern && !color) {
             // var img = new Image();
             // img.src = `./isometrics/sprite/${sprite}.png`;
             // var pattern = this.graphics.createPattern(img, 'repeat');
-            this.graphics.fillStyle = spritePattern;
-            
+            this.graphics.fillStyle = pattern;
             // img.onload = () => {
             //     console.log(that.graphics)
             //     var pattern = that.graphics.createPattern(img, 'repeat');
             //     that.graphics.fillStyle = pattern;
             //     console.log("fffffff")
             // }
-
-            console.log("dddd")
             
         }
-        if (color && !spritePattern) {
+        if (color && !pattern) {
             this.graphics.fillStyle = color;
         }
         this.graphics.setLineDash([2]);
@@ -85,7 +76,7 @@ class Isometric{
         this.tilePos4 = [x, y + TILE_DIAGONAL_Y / 2];
     }
 
-    tileBorder = (initX, initY, height, color, sprite, tileOnRight, tileOnLeft) => {
+    tileBorder = (initX, initY, height, color, pattern, tileOnRight, tileOnLeft) => {
         let y = this.baseY + ((initY + initX - height) * TILE_DIAGONAL_Y / 2);
         let x = this.baseX + (initX * TILE_DIAGONAL_X / 2) - (initY * TILE_DIAGONAL_X / 2);
         this.graphics.fillStyle = color;
@@ -136,11 +127,11 @@ class Isometric{
 
     
 
-    drawTile(isoPoint, texture, float, tileOnRight, tileOnLeft, tileColor, tileBorderColor, tileSprite, tileBorderSprite){
+    drawTile(isoPoint, float, tileOnRight, tileOnLeft, tileColor, tileBorderColor, tileSpritePattern, tileBorderSpritePattern){
 
         if (float || isoPoint.height == 0) {
-            this.tileSkull(isoPoint.x, isoPoint.y, isoPoint.height, tileColor, tileSprite);
-            this.tileBorder(isoPoint.x, isoPoint.y, isoPoint.height, tileBorderColor, tileBorderSprite, tileOnRight, tileOnLeft);
+            this.tileSkull(isoPoint.x, isoPoint.y, isoPoint.height, tileColor, tileSpritePattern);
+            this.tileBorder(isoPoint.x, isoPoint.y, isoPoint.height, tileBorderColor, tileBorderSpritePattern, tileOnRight, tileOnLeft);
         } 
         // else {
         //     if (texture != "water")

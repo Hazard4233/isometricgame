@@ -5,3 +5,4 @@ const CLICK_TILE_COLOR = '#F44336';
 
 
 // material name
+const SPRITE_LIST = ['grass', 'rock1', 'rock2', 'rock3'];
