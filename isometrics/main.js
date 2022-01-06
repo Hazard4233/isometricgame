@@ -66,7 +66,6 @@ function clickTile(evt) {
         var pattern = patternList.filter(item => String(map[selectedTile.idxCol][selectedTile.idxRow]).includes(item.type))
         isometric.drawTile(
             new IsomtericPoint(selectedTile.idxRow, selectedTile.idxCol, texture.getHeight()),
-            false,
             selectedTile.idxRow === map[selectedTile.idxCol].length - 1 ? true : false, // tileOnRight
             selectedTile.idxCol + 1 >= map.length ? true : false, // tileOnLeft
             null, // tileColor
@@ -80,7 +79,6 @@ function clickTile(evt) {
         var texture = new IsometricTexturize(map[result[0].idxCol][result[0].idxRow]);
         isometric.drawTile(
             new IsomtericPoint(result[0].idxRow, result[0].idxCol, texture.getHeight()),
-            false,
             result[0].idxRow === map[result[0].idxCol].length - 1 ? true : false, // tileOnRight
             result[0].idxCol + 1 >= map.length ? true : false, // tileOnLeft
             CLICK_TILE_COLOR, // tileColor
@@ -111,7 +109,6 @@ function hoverTile(evt) {
             var pattern = patternList.filter(item => String(map[hoveredTile.idxCol][hoveredTile.idxRow]).includes(item.type))
             isometric.drawTile(
                 new IsomtericPoint(hoveredTile.idxRow, hoveredTile.idxCol, texture.getHeight()), // isoPoint
-                false, // float
                 hoveredTile.idxRow === map[result[0].idxCol].length - 1 ? true : false, // tileOnRight
                 hoveredTile.idxCol + 1 == map.length ? true : false, // tileOnLeft
                 null, // tileColor
@@ -127,7 +124,6 @@ function hoverTile(evt) {
             var texture = new IsometricTexturize(map[result[0].idxCol][result[0].idxRow]);
             isometric.drawTile(
                 new IsomtericPoint(result[0].idxRow, result[0].idxCol, texture.getHeight()), // isoPoint
-                false, // float
                 result[0].idxRow === map[result[0].idxCol].length - 1 ? true : false, // tileOnRight
                 result[0].idxCol + 1 >= map.length ? true : false, // tileOnLeft
                 HOVER_TILE_COLOR, // tileColor
@@ -144,7 +140,9 @@ function hoverTile(evt) {
 }
 
 function resizeCanvas() {
-    initMap()
+    setTimeout(() => {
+        initMap()    
+    }, 100);
 }
 
 
@@ -160,7 +158,6 @@ function initMap() {
                 var pattern = patternList.filter(item => String(map[idxCol][idxRow]).includes(item.type))
                 isometric.drawTile(
                     new IsomtericPoint(idxRow, idxCol, texture.getHeight()), // isoPoint
-                    false, // float
                     true, // tileOnRight
                     true, // tileOnLeft
                     null, // tileColor
@@ -236,8 +233,8 @@ function initCanvas() {
 
     // init canvas
     canvas.size(
-        64 * (numCols && numRows) > document.documentElement.clientWidth ? 64 * (numCols && numRows) + 200 : document.documentElement.clientWidth, 
-        64 * (numCols && numRows) * 0.7 > document.documentElement.clientWidth ? 64 * (numCols && numRows) * 0.7 : document.documentElement.clientWidth,
+        TILE_DIAGONAL_X * (numCols || numRows) > document.documentElement.clientWidth ? TILE_DIAGONAL_X * (numCols || numRows) + 200 : document.documentElement.clientWidth, 
+        TILE_DIAGONAL_X * (numCols || numRows) * 0.7 > document.documentElement.clientWidth ? TILE_DIAGONAL_X * (numCols || numRows) * 0.7 : document.documentElement.clientWidth,
     );
     canvas.background('skyblue');
     initSpritePattern(canvas.graphics)
@@ -250,6 +247,8 @@ canvasEle.addEventListener('mousemove', (evt) => hoverTile(evt))
 window.addEventListener('resize', resizeCanvas, false)
 
 document.getElementById("create-btn").addEventListener('click', () => {
-    initMap()
+    setTimeout(() => {
+        initMap()    
+    }, 100);
 })
 

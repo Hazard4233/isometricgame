@@ -127,9 +127,9 @@ class Isometric{
 
     
 
-    drawTile(isoPoint, float, tileOnRight, tileOnLeft, tileColor, tileBorderColor, tileSpritePattern, tileBorderSpritePattern){
+    drawTile(isoPoint, tileOnRight, tileOnLeft, tileColor, tileBorderColor, tileSpritePattern, tileBorderSpritePattern){
 
-        if (float || isoPoint.height == 0) {
+        if (isoPoint.height == 0) {
             this.tileSkull(isoPoint.x, isoPoint.y, isoPoint.height, tileColor, tileSpritePattern);
             this.tileBorder(isoPoint.x, isoPoint.y, isoPoint.height, tileBorderColor, tileBorderSpritePattern, tileOnRight, tileOnLeft);
         } 
