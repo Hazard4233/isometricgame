@@ -15,8 +15,22 @@ var hoveredTile = {
     idxCol: -2
 }    
 
+var patternList = []
+
 window.onload = function () {
-    initCanvas()
+    
+    var materials = ['grass', 'rock1', 'rock2', 'rock3'];
+    for (let index = 0; index < materials.length; index++) {
+        var img = new Image();
+        img.src = `./isometrics/sprite/${item}.png`;
+        var pattern = canvas.graphics.createPattern(img, 'repeat');
+        // canvas.graphics.fillStyle = grassPattern;
+        patternList.push(pattern)
+    }
+    
+    setTimeout(() => {
+        initCanvas()
+    }, 100);
     
 }
 
@@ -74,7 +88,6 @@ function hoverTile(evt) {
     
     var result = isometricList.filter(item => {
         if (detectPosInTile([x, y], item.pos1, item.pos2, item.pos3, item.pos4)) {
-            item.hovered = true;
             return item;
         }
     })

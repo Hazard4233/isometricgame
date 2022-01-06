@@ -19,21 +19,42 @@ class Isometric{
 
         this.intialized = true;
     }
-    tileSkull = (initX, initY, height, color, sprite) => {
+    initPattern = (sprite, context) => {
+        var img = new Image();
+        img.src = `./isometrics/sprite/${sprite}.png`;
+        img.onload = function () {
+            var pattern = context.createPattern(img, 'repeat');
+            context.fillStyle = pattern;
+        }
+        
+    }
+    tileSkull = (initX, initY, height, color, spritePattern) => {
         let y = this.baseY + ((initY + initX - height) * TILE_DIAGONAL_Y / 2);
         let x = this.baseX + (initX * TILE_DIAGONAL_X / 2) - (initY * TILE_DIAGONAL_X / 2);
 
         
-        if (sprite && !color) {
-            var img = new Image();
-            img.src = `./isometrics/sprite/${sprite}.png`;
-            var pattern = this.graphics.createPattern(img, 'repeat');
-            this.graphics.fillStyle = pattern;
+        if (spritePattern && !color) {
+            
+            // this.initPattern(sprite, this.graphics)
+            
+            // var img = new Image();
+            // img.src = `./isometrics/sprite/${sprite}.png`;
+            // var pattern = this.graphics.createPattern(img, 'repeat');
+            this.graphics.fillStyle = spritePattern;
+            
+            // img.onload = () => {
+            //     console.log(that.graphics)
+            //     var pattern = that.graphics.createPattern(img, 'repeat');
+            //     that.graphics.fillStyle = pattern;
+            //     console.log("fffffff")
+            // }
+
+            console.log("dddd")
+            
         }
-        if (color && !sprite) {
+        if (color && !spritePattern) {
             this.graphics.fillStyle = color;
         }
-        
         this.graphics.setLineDash([2]);
         this.graphics.beginPath();
         this.graphics.moveTo(x + TILE_DIAGONAL_X / 2, y);
