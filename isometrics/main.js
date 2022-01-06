@@ -15,8 +15,11 @@ var hoveredTile = {
     idxCol: -2
 }    
 
+window.onload = function () {
+    initCanvas()
+    
+}
 
-initCanvas()
 
 function clickTile(evt) {
     var x = evt.x + document.querySelector(".canvas-div").scrollLeft;
@@ -37,8 +40,10 @@ function clickTile(evt) {
             false,
             selectedTile.idxRow === map[selectedTile.idxCol].length - 1 ? true : false, // tileOnRight
             selectedTile.idxCol + 1 >= map.length ? true : false, // tileOnLeft
-            materials[texture.getTexture()][0], // tileColor
+            null, // tileColor
             materials[texture.getTexture()][1], // tileBorderColor
+            texture.getTexture(),
+            null
         );
     }
     
@@ -52,6 +57,8 @@ function clickTile(evt) {
             result[0].idxCol + 1 >= map.length ? true : false, // tileOnLeft
             CLICK_TILE_COLOR, // tileColor
             CLICK_TILE_COLOR, // tile
+            null, // tileSprite
+            null, // tileBorderSprite 
             
         );
         selectedTile.id = result[0].id
@@ -81,8 +88,10 @@ function hoverTile(evt) {
                 false, // float
                 hoveredTile.idxRow === map[result[0].idxCol].length - 1 ? true : false, // tileOnRight
                 hoveredTile.idxCol + 1 == map.length ? true : false, // tileOnLeft
-                materials[texture.getTexture()][0], // tileColor
+                null, // tileColor
                 materials[texture.getTexture()][1], // tileBorderColor
+                texture.getTexture(), // tileSprite
+                null // tileBorderSprite
             );
         }
         
@@ -97,6 +106,8 @@ function hoverTile(evt) {
                 result[0].idxCol + 1 >= map.length ? true : false, // tileOnLeft
                 HOVER_TILE_COLOR, // tileColor
                 HOVER_TILE_COLOR, // tileBorderColor
+                null, // tileSprite
+                null // tileBorderSprite
             );
         }
         
@@ -110,7 +121,10 @@ function resizeCanvas() {
     initCanvas()
 }
 
+
+
 function initCanvas() {
+
     // format variable
     map = [];
     isometricList = [];
@@ -142,10 +156,11 @@ function initCanvas() {
         64 * (numCols && numRows) * 0.7 > document.documentElement.clientWidth ? 64 * (numCols && numRows) * 0.7 : document.documentElement.clientWidth,
     );
     canvas.background('skyblue');
-
+    
+    canvas.graphics.setTransform(1, 0, 0, 1, 0, 0)
     
     isometric = new Isometric(canvas.graphics, baseX = canvasEle.clientWidth / 2, baseY = 150);
-    
+
     // map = Array(numCols).fill(Array(numRows).fill("grass:0"))
     for (let i = 0; i < numCols; i++) {
         var arrayVar = [];
@@ -170,10 +185,6 @@ function initCanvas() {
         var randomNumRow = Math.floor(Math.random() * (numRows - 1));
         map[randomNumCol][randomNumRow] = `rock3:0`
     }
-    console.log(map[0][0])
-    console.log(map)
-    
-    
     
 
 
@@ -187,9 +198,17 @@ function initCanvas() {
                     false, // float
                     true, // tileOnRight
                     true, // tileOnLeft
-                    materials[texture.getTexture()][0], // tileColor
+                    null, // tileColor
                     materials[texture.getTexture()][1], // tileBorderColor
+                    texture.getTexture(),
+                    null // tileBorderSprite
                 );
+
+                // isometric.drawSprite(
+                //     new IsomtericPoint(idxRow, idxCol, texture.getHeight()),
+                //     'grass'
+                // )
+
                 isometricList.push({
                     id: generateUUID(),
                     idxRow: idxRow,
@@ -204,6 +223,7 @@ function initCanvas() {
             }
         }
     }
+
 }
 
 canvasEle.addEventListener('mouseup', (evt) => clickTile(evt))

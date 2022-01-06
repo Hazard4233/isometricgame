@@ -19,11 +19,21 @@ class Isometric{
 
         this.intialized = true;
     }
-    tileSkull = (initX, initY, height, color) => {
+    tileSkull = (initX, initY, height, color, sprite) => {
         let y = this.baseY + ((initY + initX - height) * TILE_DIAGONAL_Y / 2);
         let x = this.baseX + (initX * TILE_DIAGONAL_X / 2) - (initY * TILE_DIAGONAL_X / 2);
 
-        this.graphics.fillStyle = color;
+        
+        if (sprite && !color) {
+            var img = new Image();
+            img.src = `./isometrics/sprite/${sprite}.png`;
+            var pattern = this.graphics.createPattern(img, 'repeat');
+            this.graphics.fillStyle = pattern;
+        }
+        if (color && !sprite) {
+            this.graphics.fillStyle = color;
+        }
+        
         this.graphics.setLineDash([2]);
         this.graphics.beginPath();
         this.graphics.moveTo(x + TILE_DIAGONAL_X / 2, y);
@@ -35,13 +45,26 @@ class Isometric{
         this.graphics.fill();
         this.graphics.stroke();
 
+        // this.graphics.fillStyle = color;
+        // this.graphics.setLineDash([2]);
+        // this.graphics.beginPath();
+        // this.graphics.moveTo(x + TILE_DIAGONAL_X / 2, y);
+        // this.graphics.lineTo(x + TILE_DIAGONAL_X, y + TILE_DIAGONAL_Y / 2);
+        // this.graphics.lineTo(x + TILE_DIAGONAL_X / 2, y + TILE_DIAGONAL_Y);
+        // this.graphics.lineTo(x , y + TILE_DIAGONAL_Y / 2);
+        // this.graphics.lineTo(x + TILE_DIAGONAL_X / 2, y);
+        // this.graphics.closePath();
+        // this.graphics.fill();
+        // this.graphics.stroke();
+
+
         this.tilePos1 = [x + TILE_DIAGONAL_X / 2, y];
         this.tilePos2 = [x + TILE_DIAGONAL_X, y + TILE_DIAGONAL_Y / 2];
         this.tilePos3 = [x + TILE_DIAGONAL_X / 2, y + TILE_DIAGONAL_Y];
         this.tilePos4 = [x, y + TILE_DIAGONAL_Y / 2];
     }
 
-    tileBorder = (initX, initY, height, color, tileOnRight, tileOnLeft) => {
+    tileBorder = (initX, initY, height, color, sprite, tileOnRight, tileOnLeft) => {
         let y = this.baseY + ((initY + initX - height) * TILE_DIAGONAL_Y / 2);
         let x = this.baseX + (initX * TILE_DIAGONAL_X / 2) - (initY * TILE_DIAGONAL_X / 2);
         this.graphics.fillStyle = color;
@@ -92,18 +115,11 @@ class Isometric{
 
     
 
-    drawTile(isoPoint, texture, float, tileOnRight, tileOnLeft, tileColor, tileBorderColor){
+    drawTile(isoPoint, texture, float, tileOnRight, tileOnLeft, tileColor, tileBorderColor, tileSprite, tileBorderSprite){
 
         if (float || isoPoint.height == 0) {
-            this.tileSkull(isoPoint.x, isoPoint.y, isoPoint.height, tileColor);
-            this.tileBorder(
-                isoPoint.x, 
-                isoPoint.y, 
-                isoPoint.height, 
-                tileBorderColor,
-                tileOnRight,
-                tileOnLeft,
-            );
+            this.tileSkull(isoPoint.x, isoPoint.y, isoPoint.height, tileColor, tileSprite);
+            this.tileBorder(isoPoint.x, isoPoint.y, isoPoint.height, tileBorderColor, tileBorderSprite, tileOnRight, tileOnLeft);
         } 
         // else {
         //     if (texture != "water")
@@ -128,10 +144,15 @@ class Isometric{
     }
 
     drawSprite(isoPoint,  sprite){
-        let y = this.baseY + ((isoPoint.y + isoPoint.x - isoPoint.height) * 16) - 32 + 8;
-        let x = (this.baseX + (isoPoint.x * 32) - (isoPoint.y * 32));
+        // let y = this.baseY + ((isoPoint.y + isoPoint.x - isoPoint.height) * 16) - 32 + 8;
+        // let x = (this.baseX + (isoPoint.x * 32) - (isoPoint.y * 32));
+        // var sprt = new Image();
+        // sprt.src = "isometrics/sprite/" + sprite + ".png";
+        // this.graphics.drawImage(sprt, x, y, 64,64);
+
         var sprt = new Image();
-        sprt.src = "isometrics/sprite/" + sprite + ".png";
-        this.graphics.drawImage(sprt, x, y, 64,64);
+        sprt.src = `./isometrics/sprite/${sprite}.png`;
+        canvas.graphics.transform(1, 0, 0, 0.5, 0, 0);
+        canvas.graphics.drawImage(sprt, 350, 300, TILE_DIAGONAL_X, TILE_DIAGONAL_X)
     }
 }
