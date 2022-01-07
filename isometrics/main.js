@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("DOMContentLoaded")
     setTimeout(() => {
         initMap()    
-    }, 300);
+    }, 500);
 })
 
 window.onload = function () {
