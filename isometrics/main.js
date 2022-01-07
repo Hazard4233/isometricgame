@@ -20,9 +20,14 @@ var patternList = [];
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("DOMContentLoaded")
+    var loadingEle = document.querySelector("#loading")
+    loadingEle.style.display = 'flex'
+
     setTimeout(() => {
+        console.log(loadingEle)
+        loadingEle.style.display = 'none'
         initMap()    
-    }, 500);
+    }, 1000);
 })
 
 window.onload = function () {
