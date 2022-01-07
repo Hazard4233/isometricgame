@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loadingEle.style.display = 'flex'
 
     setTimeout(() => {
-        console.log(loadingEle)
         loadingEle.style.display = 'none'
         initMap()    
     }, 1000);
@@ -238,9 +237,11 @@ function initCanvas() {
 
     // init canvas
     canvas.size(
-        TILE_DIAGONAL_X * (numCols || numRows) > document.documentElement.clientWidth ? TILE_DIAGONAL_X * (numCols || numRows) + 200 : document.documentElement.clientWidth, 
-        TILE_DIAGONAL_X * (numCols || numRows) * 0.7 > document.documentElement.clientWidth ? TILE_DIAGONAL_X * (numCols || numRows) * 0.7 : document.documentElement.clientWidth,
+        TILE_DIAGONAL_X * (numCols > numRows ? numCols : numRows) > document.documentElement.clientWidth ? TILE_DIAGONAL_X * (numCols > numRows ? numCols : numRows) + 200 : document.documentElement.clientWidth, 
+        TILE_DIAGONAL_X * (numCols > numRows ? numCols : numRows) > document.documentElement.clientWidth ? TILE_DIAGONAL_X * (numCols > numRows ? numCols : numRows) : document.documentElement.clientWidth,
     );
+    console.log(numCols && numRows)
+    console.log(TILE_DIAGONAL_X * (numCols > numRows ? numCols : numRows) > document.documentElement.clientWidth ? TILE_DIAGONAL_X * (numCols > numRows ? numCols : numRows) + 200 : document.documentElement.clientWidth,)
     canvas.background('skyblue');
     initSpritePattern(canvas.graphics)
 }
