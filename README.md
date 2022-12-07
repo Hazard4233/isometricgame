@@ -8,6 +8,7 @@ Implementing:
 - IsometricPoint for position of tiles
 - IsometricTexturize (Parsor for map generator)
 
+![Screenshot_28](https://user-images.githubusercontent.com/60603371/206209210-99dec35a-ca67-4749-9e46-6e772626ecaa.png)
 
 ### How to create map
 
